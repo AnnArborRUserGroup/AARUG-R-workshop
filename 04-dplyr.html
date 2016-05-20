@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 
 
@@ -38,25 +38,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
-
-</head>
-
-<body>
-
 <style type="text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
 h1 {
   font-size: 34px;
 }
@@ -77,6 +59,30 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -107,7 +113,8 @@ $(document).ready(function () {
 <div class="fluid-row" id="header">
 
 
-<h1 class="title">Herding cats with dplyr</h1>
+
+<h1 class="title toc-ignore">Herding cats with dplyr</h1>
 
 </div>
 
@@ -115,13 +122,25 @@ $(document).ready(function () {
 <hr />
 <div id="dplyr" class="section level1">
 <h1><code>dplyr</code></h1>
-<p>Bracket subsetting is handy, but it can be cumbersome and difficult to read, especially for complicated operations. Enter <code>dplyr</code>!</p>
+<p>80% of the work involved with data analysis involves cleaning and shaping the data until it’s in the state you need. Bracket subsetting is handy, but it can be cumbersome and difficult to read, especially for complicated operations. Enter <code>dplyr</code>!</p>
 <p><code>dplyr</code> is a package for making data manipulation easier. (It does a lot more too, but this is what we’ll focus on).</p>
+<p>Unlike the subsetting commands we’ve already worked on, <code>dplyr</code> is designed to be highly expressive, and highly readable. It’s structured around a set of verbs, or grammar of data manipulation. The core functions we’ll talk about are below:</p>
+<ul>
+<li><code>select</code></li>
+<li><code>arrange</code></li>
+<li><code>filter</code></li>
+<li><code>group_by</code></li>
+<li><code>mutate</code></li>
+<li><code>summarise/summarize</code></li>
+</ul>
+<div id="getting-the-package" class="section level2">
+<h2>Getting the package</h2>
 <pre class="r"><code>install.packages(&quot;dplyr&quot;)</code></pre>
 <p>Again, you may be asked to choose a CRAN mirror; RStudio is a good choice.</p>
-<p>Now unlike the <code>rmarkdown</code> package, we’ll be using <code>dplyr</code> in the console. In order to do that, we need to <em>load</em> the package into our environment so we can access functions from <code>dplyr</code>. We do this with the <code>library</code> command:</p>
+<p>Unlike the <code>rmarkdown</code> package, we’ll be using <code>dplyr</code> in the console. In order to do that, we need to <em>load</em> the package into our environment so we can access functions from <code>dplyr</code>. We do this with the <code>library</code> command:</p>
 <pre class="r"><code>library(&quot;dplyr&quot;)</code></pre>
 <p>You only need to install a package once per computer, but you need to load it every time you open a new R session and want to use that package.</p>
+</div>
 <div id="subsetting-data" class="section level2">
 <h2>Subsetting Data</h2>
 <p>The first two <code>dplyr</code> commands we’ll use help us to subset our data by rows and columns.</p>
@@ -129,105 +148,245 @@ $(document).ready(function () {
 <h3><code>select</code></h3>
 <p>The first command we’ll use is <code>select</code>, which allows us to choose columns from our dataset. Let’s use our <code>cats</code> dataset and select only the <code>coat</code> column; we did this previously with</p>
 <pre class="r"><code>cats[, &quot;coat&quot;]</code></pre>
-<pre><code>## [1] calico black  tabby  grey   black  orange calico tabby 
-## Levels: black calico grey orange tabby</code></pre>
+<pre><code>##  [1] tabby   maltese brown   black   calico  tabby   brown   brown  
+##  [9] black   maltese
+## Levels: black brown calico maltese tabby</code></pre>
 <p>With dplyr, we don’t need to enclose our column names in quotes</p>
 <pre class="r"><code>select(cats, coat)</code></pre>
-<pre><code>##     coat
-## 1 calico
-## 2  black
-## 3  tabby
-## 4   grey
-## 5  black
-## 6 orange
-## 7 calico
-## 8  tabby</code></pre>
-<p>Notice how the output differs slightly; all the main <code>dplyr</code> verbs behave consistently in that their inputs and outputs are both <code>data.frame</code>s, rather than returning a simple vector as the bracket-indexing method did.</p>
+<pre><code>##       coat
+## 1    tabby
+## 2  maltese
+## 3    brown
+## 4    black
+## 5   calico
+## 6    tabby
+## 7    brown
+## 8    brown
+## 9    black
+## 10 maltese</code></pre>
+<p>Notice how the output differs slightly; all the main <code>dplyr</code> verbs behave consistently in that their inputs and outputs are both <code>data.frame</code>s, rather than returning a simple vector as the bracket-indexing method did. All of the main “verbs” we’ll talk about will return a data.frame as their result.</p>
 <p>We can select more columns by giving <code>select</code> additional arguments, and our output <code>data.frame</code> will have columns according to the order of our arguments</p>
 <pre class="r"><code>select(cats, coat, cat_id)</code></pre>
-<pre><code>##     coat cat_id
-## 1 calico      1
-## 2  black      2
-## 3  tabby      3
-## 4   grey      4
-## 5  black      5
-## 6 orange      6
-## 7 calico      7
-## 8  tabby      8</code></pre>
+<pre><code>##       coat cat_id
+## 1    tabby    321
+## 2  maltese    250
+## 3    brown    219
+## 4    black    182
+## 5   calico    107
+## 6    tabby    234
+## 7    brown    196
+## 8    brown    311
+## 9    black    130
+## 10 maltese    349</code></pre>
 </div>
 <div id="filter" class="section level3">
 <h3><code>filter</code></h3>
 <p>So where <code>select</code> allowed us to select <em>columns</em>, <code>filter</code> operated on <em>rows</em>. Say we want to see the all the cats with black coats; we saw earlier how to use that using bracket-indexing:</p>
 <pre class="r"><code>cats[cats$coat == &quot;black&quot;, ]</code></pre>
-<pre><code>##   cat_id  coat weight likes_string
-## 2      2 black      5        FALSE
-## 5      5 black      4         TRUE</code></pre>
+<pre><code>##             street  coat    sex   age weight fixed wander_dist roamer
+## 4    140 Robin Way black female 7.172  8.053     1       0.030     no
+## 9 16982 Kennedy Rd black female 2.851  3.291     0       0.065     no
+##   cat_id
+## 4    182
+## 9    130</code></pre>
 <p>In dplyr, this looks like</p>
 <pre class="r"><code>filter(cats, coat == &quot;black&quot;)</code></pre>
-<pre><code>##   cat_id  coat weight likes_string
-## 1      2 black      5        FALSE
-## 2      5 black      4         TRUE</code></pre>
+<pre><code>##             street  coat    sex   age weight fixed wander_dist roamer
+## 1    140 Robin Way black female 7.172  8.053     1       0.030     no
+## 2 16982 Kennedy Rd black female 2.851  3.291     0       0.065     no
+##   cat_id
+## 1    182
+## 2    130</code></pre>
 <p>Notice we don’t have to use the <code>$</code> operator to tell <code>filter</code> where the <code>coat</code> column is; it’s smart enough to assume we want the <code>coat</code> column from the <code>data.frame</code> we passed in.</p>
+</div>
+<div id="arrange" class="section level3">
+<h3><code>arrange</code></h3>
+<p>Maybe you have a set of observations in your data that you want to organize by their value. <code>arrange</code> allows us to change the order of rows in our dataset based on their values.</p>
+<pre class="r"><code>arrange(cats, coat)</code></pre>
+<pre><code>##                 street    coat    sex   age weight fixed wander_dist
+## 1        140 Robin Way   black female 7.172  8.053     1       0.030
+## 2     16982 Kennedy Rd   black female 2.851  3.291     0       0.065
+## 3    201 Hollywood Ave   brown female 4.601  3.947     1       0.076
+## 4  115 Via Santa Maria   brown   male 6.917  5.626     1       0.097
+## 5      303 Harding Ave   brown   male 3.713  3.982     1       0.033
+## 6       135 Charles St  calico   male 4.660  6.193     1       0.085
+## 7      242 Harding Ave maltese female 8.234 12.368     1       0.033
+## 8   16528 Marchmont Dr maltese female 4.594  6.994     0       0.059
+## 9       Los Robles Way   tabby female 3.003  3.993     0       0.040
+## 10 130 Vista Del Campo   tabby female 3.796  3.860     1       0.085
+##    roamer cat_id
+## 1      no    182
+## 2      no    130
+## 3      no    219
+## 4     yes    196
+## 5      no    311
+## 6     yes    107
+## 7      no    250
+## 8      no    349
+## 9      no    321
+## 10     no    234</code></pre>
+<pre class="r"><code># you can include additional columns to help sort the data
+arrange(cats, coat, sex)</code></pre>
+<pre><code>##                 street    coat    sex   age weight fixed wander_dist
+## 1        140 Robin Way   black female 7.172  8.053     1       0.030
+## 2     16982 Kennedy Rd   black female 2.851  3.291     0       0.065
+## 3    201 Hollywood Ave   brown female 4.601  3.947     1       0.076
+## 4  115 Via Santa Maria   brown   male 6.917  5.626     1       0.097
+## 5      303 Harding Ave   brown   male 3.713  3.982     1       0.033
+## 6       135 Charles St  calico   male 4.660  6.193     1       0.085
+## 7      242 Harding Ave maltese female 8.234 12.368     1       0.033
+## 8   16528 Marchmont Dr maltese female 4.594  6.994     0       0.059
+## 9       Los Robles Way   tabby female 3.003  3.993     0       0.040
+## 10 130 Vista Del Campo   tabby female 3.796  3.860     1       0.085
+##    roamer cat_id
+## 1      no    182
+## 2      no    130
+## 3      no    219
+## 4     yes    196
+## 5      no    311
+## 6     yes    107
+## 7      no    250
+## 8      no    349
+## 9      no    321
+## 10     no    234</code></pre>
+</div>
+<div id="mutate" class="section level3">
+<h3><code>mutate</code></h3>
+<p>One common task in working with data is updating/cleaning some of the values in columns. <code>mutate</code> allows us to do this relatively easily. Let’s say I don’t want a lot of decimal places in one of my measurements. I can use <code>mutate</code> to update my existing variable:</p>
+<pre class="r"><code>mutate(cats, weight = round(weight, 2))</code></pre>
+<pre><code>##                 street    coat    sex   age weight fixed wander_dist
+## 1       Los Robles Way   tabby female 3.003   3.99     0       0.040
+## 2      242 Harding Ave maltese female 8.234  12.37     1       0.033
+## 3    201 Hollywood Ave   brown female 4.601   3.95     1       0.076
+## 4        140 Robin Way   black female 7.172   8.05     1       0.030
+## 5       135 Charles St  calico   male 4.660   6.19     1       0.085
+## 6  130 Vista Del Campo   tabby female 3.796   3.86     1       0.085
+## 7  115 Via Santa Maria   brown   male 6.917   5.63     1       0.097
+## 8      303 Harding Ave   brown   male 3.713   3.98     1       0.033
+## 9     16982 Kennedy Rd   black female 2.851   3.29     0       0.065
+## 10  16528 Marchmont Dr maltese female 4.594   6.99     0       0.059
+##    roamer cat_id
+## 1      no    321
+## 2      no    250
+## 3      no    219
+## 4      no    182
+## 5     yes    107
+## 6      no    234
+## 7     yes    196
+## 8      no    311
+## 9      no    130
+## 10     no    349</code></pre>
+<p>Another common task is generating a new column based on values that are already in the dataset you are working on. <code>mutate</code> helps us do this, and tacks a new column to the end of our data.frame.</p>
+<pre class="r"><code># let's say you want to add two variables together
+mutate(cats, new_variable = age + weight)</code></pre>
+<pre><code>##                 street    coat    sex   age weight fixed wander_dist
+## 1       Los Robles Way   tabby female 3.003  3.993     0       0.040
+## 2      242 Harding Ave maltese female 8.234 12.368     1       0.033
+## 3    201 Hollywood Ave   brown female 4.601  3.947     1       0.076
+## 4        140 Robin Way   black female 7.172  8.053     1       0.030
+## 5       135 Charles St  calico   male 4.660  6.193     1       0.085
+## 6  130 Vista Del Campo   tabby female 3.796  3.860     1       0.085
+## 7  115 Via Santa Maria   brown   male 6.917  5.626     1       0.097
+## 8      303 Harding Ave   brown   male 3.713  3.982     1       0.033
+## 9     16982 Kennedy Rd   black female 2.851  3.291     0       0.065
+## 10  16528 Marchmont Dr maltese female 4.594  6.994     0       0.059
+##    roamer cat_id new_variable
+## 1      no    321        6.996
+## 2      no    250       20.602
+## 3      no    219        8.548
+## 4      no    182       15.225
+## 5     yes    107       10.853
+## 6      no    234        7.656
+## 7     yes    196       12.543
+## 8      no    311        7.695
+## 9      no    130        6.142
+## 10     no    349       11.588</code></pre>
+<pre class="r"><code># you can include as many new variables as you want, separated by a comma
+mutate(cats, new_var_1 = age + weight, new_var_2 = age * weight)</code></pre>
+<pre><code>##                 street    coat    sex   age weight fixed wander_dist
+## 1       Los Robles Way   tabby female 3.003  3.993     0       0.040
+## 2      242 Harding Ave maltese female 8.234 12.368     1       0.033
+## 3    201 Hollywood Ave   brown female 4.601  3.947     1       0.076
+## 4        140 Robin Way   black female 7.172  8.053     1       0.030
+## 5       135 Charles St  calico   male 4.660  6.193     1       0.085
+## 6  130 Vista Del Campo   tabby female 3.796  3.860     1       0.085
+## 7  115 Via Santa Maria   brown   male 6.917  5.626     1       0.097
+## 8      303 Harding Ave   brown   male 3.713  3.982     1       0.033
+## 9     16982 Kennedy Rd   black female 2.851  3.291     0       0.065
+## 10  16528 Marchmont Dr maltese female 4.594  6.994     0       0.059
+##    roamer cat_id new_var_1  new_var_2
+## 1      no    321     6.996  11.990979
+## 2      no    250    20.602 101.838112
+## 3      no    219     8.548  18.160147
+## 4      no    182    15.225  57.756116
+## 5     yes    107    10.853  28.859380
+## 6      no    234     7.656  14.652560
+## 7     yes    196    12.543  38.915042
+## 8      no    311     7.695  14.785166
+## 9      no    130     6.142   9.382641
+## 10     no    349    11.588  32.130436</code></pre>
 </div>
 </div>
 <div id="pipes" class="section level2">
 <h2>Pipes</h2>
-<p>Before we talk about chaining <code>dplyr</code> operations, we need to introduce a tool that simplifies this chaining. Enter the “magrittr pipe”, or just “pipe”, which looks like <code>%&gt;%</code>. It comes from the <code>magrittr</code> package and is loaded when you load <code>dplyr</code> into you environment (e.g. <code>library(dplyr)</code>).</p>
-<p>The pipe is a binary operator (like <code>+</code> or <code>*</code>) which takes the ouput of a command and “pipes” it into another one. It can be used with most functions (it’s not specific to <code>dplyr</code> functions). As an example, recall we can round a number like this</p>
+<p>You’ll often find yourself needing to use multiple functions in a row to organize some data that you’re working on. This can sometimes lead to dense code that is difficult to read.</p>
+<pre class="r"><code># for example
+sort(round(sqrt(cats$age * 2), 3))</code></pre>
+<pre><code>##  [1] 2.388 2.451 2.725 2.755 3.031 3.033 3.053 3.719 3.787 4.058</code></pre>
+<p>In the code above, I have multiple steps to get my result, but you have to read what’s going on from the inside out. This can be cumbersome, especially if you need to understand how one function’s output influences the next operation.</p>
+<div id="using-pipes" class="section level3">
+<h3>Using Pipes</h3>
+<p><code>dplyr</code> includes a special operator designed to make code <em>flow</em> and appear more readable.</p>
+<p>It’s written as <code>%&gt;%</code>, and you can call it the “pipe” operator.</p>
+<p>Our example above can be re-written as:</p>
+<pre class="r"><code>cats$age * 2 %&gt;% 
+  sqrt() %&gt;%
+  round(3) %&gt;%
+  sort()</code></pre>
+<pre><code>##  [1]  4.246242 11.642876  6.505814 10.141208  6.589240  5.367544  9.780638
+##  [8]  5.250182  4.031314  6.495916</code></pre>
+<p>Instead of being nested within a bunch of commands, you can see read the code as a series of statements: 1. Multiply <code>cats$age</code> by 2, <em>then</em> 2. Take the square-root of these values, <em>then</em> 3. Round the result to the 3rd digit, <em>then</em> 4. Sort the values in ascending order</p>
+<p>I encourage you to think of the <code>%&gt;%</code> as short-hand for “then”, when reading code that uses it!</p>
+<p>“Pipe” operators are found in other languages; they get their name from the idea that your code can be thought of as a “pipeline”.</p>
+<p>Let’s look at another example.</p>
 <pre class="r"><code>round(1.23456789, 3)</code></pre>
 <pre><code>## [1] 1.235</code></pre>
-<p>We can use a pipe operator to acheive the same thing</p>
+<p>We can use a pipe operator to acheive the same thing.</p>
 <pre class="r"><code>1.23456789 %&gt;% round(3)</code></pre>
 <pre><code>## [1] 1.235</code></pre>
-<p>The pipe takes care of making sure the output of the expression on the left-hand-side (a simple numeric, in this case) is inserted as the first argument of the expressing on the right-hand-side. We can also pipe into other argument positions by using a period as a placeholder</p>
+<p>The pipe takes care of making sure the output of the expression on the left-hand-side (a simple numeric, in this case) is inserted as the first argument of the expressing on the right-hand-side. We can also pipe into other argument positions by using a period as a placeholder.</p>
 <pre class="r"><code>3 %&gt;% round(1.23456789, .)</code></pre>
 <pre><code>## [1] 1.235</code></pre>
 <p>These are contrived examples, and I don’t suggest using pipes for simple operations like rounding. The pipes really become useful when chaining together multiple operations in sequence, as we’ll do with our <code>dplyr</code> functions.</p>
 </div>
+</div>
 <div id="combining-select-filter" class="section level2">
 <h2>Combining Select &amp; Filter</h2>
-<p>Remember how we used <code>filter</code> to select only the black cats? What if we only want to see the ID’s of those cats, rather than all the info about them? We’ve already seen we can use <code>select</code> to pick out certain columns. We can use that to select the <code>cat_id</code> column from our <code>filter</code>ed dataset like so</p>
-<pre class="r"><code>select(filter(cats, coat == &quot;black&quot;), cat_id)</code></pre>
+<p>The pipe is really helpful when combined with the data-manipulation of <code>dplyr</code>. Remember how we used <code>filter</code> to select only the black cats? What if we only want to see the ID’s of those cats, rather than all the info about them? We’ve already seen we can use <code>select</code> to pick out certain columns. We can use that to select the <code>cat_id</code> column from our <code>filter</code>ed dataset like so</p>
+<pre class="r"><code># reading from the inside out
+select(filter(cats, coat == &quot;black&quot;), cat_id)</code></pre>
 <pre><code>##   cat_id
-## 1      2
-## 2      5</code></pre>
-<p>That might not look too bad now, but what if we wanted to do another operation on that output? We’d add another layer of nesting, and having to read that line from the inside-out can quickly become annoying. We can use the pipe operator to clean that up</p>
-<pre class="r"><code>filter(cats, coat == &quot;black&quot;) %&gt;% select(cat_id)</code></pre>
+## 1    182
+## 2    130</code></pre>
+<p>That might not look too bad now, but what if we wanted to do another operation on that output? We’d add another layer of nesting, and having to read that line from the inside-out can quickly become annoying. We can use the pipe operator to clean that up.</p>
+<pre class="r"><code># reading from left to right
+filter(cats, coat == &quot;black&quot;) %&gt;% select(cat_id)</code></pre>
 <pre><code>##   cat_id
-## 1      2
-## 2      5</code></pre>
+## 1    182
+## 2    130</code></pre>
 <p>We could even add another pipe to feed <code>cats</code> into <code>filter</code>; it isn’t necessary, but it makes it even easier to see what we’re operating on in this chain of commands. We’ll combine this with some line breaks to really make this easy to read:</p>
 <pre class="r"><code>cats %&gt;%
   filter(coat == &quot;black&quot;) %&gt;%
   select(cat_id)</code></pre>
 <pre><code>##   cat_id
-## 1      2
-## 2      5</code></pre>
-</div>
-<div id="more-dplyr-verbs" class="section level2">
-<h2>More <code>dplyr</code> Verbs</h2>
-<p>The two dplyr “verbs” we’ve used so far, <code>select</code> and <code>filter</code>, are useful, but only allow us to subset out dataset; to look at some smaller piece of it. The next verbs will allow us to gain new insight from the data by doing computations on it.</p>
-<div id="mutate" class="section level3">
-<h3><code>mutate</code></h3>
-<p>First, the <code>mutate</code> function. <code>mutate</code> allows us to create a new variable in a <code>data.frame</code> from an expression. Say we want to make a new weight column that rounds the original weights of these cats to whole numbers; <code>mutate</code> allows us to do this</p>
-<pre class="r"><code>cats %&gt;% mutate(rounded_weight = round(weight))</code></pre>
-<pre><code>##   cat_id   coat weight likes_string rounded_weight
-## 1      1 calico    2.1         TRUE              2
-## 2      2  black    5.0        FALSE              5
-## 3      3  tabby    3.2         TRUE              3
-## 4      4   grey    6.0         TRUE              6
-## 5      5  black    4.0         TRUE              4
-## 6      6 orange    3.7        FALSE              4
-## 7      7 calico    4.4         TRUE              4
-## 8      8  tabby    3.8         TRUE              4</code></pre>
-<p>Notice the output here had all the same columns we started with, plus this new column tacked onto the end. We could have also replaced a column with these new values by replacing <code>rounded_weight</code> with a pre-existing column name in our <code>mutate</code> call.</p>
-</div>
+## 1    182
+## 2    130</code></pre>
 <div id="summarize" class="section level3">
 <h3><code>summarize</code></h3>
 <p>While <code>mutate</code> creates new columns, it’s often useful to summarize multiple rows into a single value. Say we want to find the mean weight of all these cats; enter <code>summarize</code>! Like <code>mutate</code>, the arguments to summarize (after the <code>data.frame</code> we want to operate on) are expressions. We can combine <code>summarize</code> with the <code>mean</code> function to get a mean weight for our collection of cats like so:</p>
 <pre class="r"><code>cats %&gt;% summarize(mean_weight = mean(weight))</code></pre>
 <pre><code>##   mean_weight
-## 1       4.025</code></pre>
+## 1      5.8307</code></pre>
 <p>Notice how we have only a single value returned, but it’s still in a <code>data.frame</code> format. This is subtle, but important; all these basic <code>dplyr</code> verbs take in <code>data.frame</code>s and also return <code>data.frame</code>s. This consistency helps make long chains of <code>dplyr</code> operations possible.</p>
 </div>
 <div id="group_by" class="section level3">
@@ -239,31 +398,34 @@ $(document).ready(function () {
   summarize(mean_weight = mean(weight))</code></pre>
 <pre><code>## Source: local data frame [5 x 2]
 ## 
-##     coat mean_weight
-##   (fctr)       (dbl)
-## 1  black        4.50
-## 2 calico        3.25
-## 3   grey        6.00
-## 4 orange        3.70
-## 5  tabby        3.50</code></pre>
+##      coat mean_weight
+##    (fctr)       (dbl)
+## 1   black    5.672000
+## 2   brown    4.518333
+## 3  calico    6.193000
+## 4 maltese    9.681000
+## 5   tabby    3.926500</code></pre>
 <p>Ta-da!</p>
 <p>We can also use <code>mutate</code> on a per-group basis. Let’s make a new column which centers our weights around zero; this can be done by subtracting the group’s mean weight from each cat’s weight:</p>
 <pre class="r"><code>cats %&gt;%
   group_by(coat) %&gt;%
   mutate(centered_weight = weight - mean(weight))</code></pre>
-<pre><code>## Source: local data frame [8 x 5]
+<pre><code>## Source: local data frame [10 x 10]
 ## Groups: coat [5]
 ## 
-##   cat_id   coat weight likes_string centered_weight
-##    (int) (fctr)  (dbl)        (lgl)           (dbl)
-## 1      1 calico    2.1         TRUE           -1.15
-## 2      2  black    5.0        FALSE            0.50
-## 3      3  tabby    3.2         TRUE           -0.30
-## 4      4   grey    6.0         TRUE            0.00
-## 5      5  black    4.0         TRUE           -0.50
-## 6      6 orange    3.7        FALSE            0.00
-## 7      7 calico    4.4         TRUE            1.15
-## 8      8  tabby    3.8         TRUE            0.30</code></pre>
+##                 street    coat    sex   age weight fixed wander_dist
+##                 (fctr)  (fctr) (fctr) (dbl)  (dbl) (int)       (dbl)
+## 1       Los Robles Way   tabby female 3.003  3.993     0       0.040
+## 2      242 Harding Ave maltese female 8.234 12.368     1       0.033
+## 3    201 Hollywood Ave   brown female 4.601  3.947     1       0.076
+## 4        140 Robin Way   black female 7.172  8.053     1       0.030
+## 5       135 Charles St  calico   male 4.660  6.193     1       0.085
+## 6  130 Vista Del Campo   tabby female 3.796  3.860     1       0.085
+## 7  115 Via Santa Maria   brown   male 6.917  5.626     1       0.097
+## 8      303 Harding Ave   brown   male 3.713  3.982     1       0.033
+## 9     16982 Kennedy Rd   black female 2.851  3.291     0       0.065
+## 10  16528 Marchmont Dr maltese female 4.594  6.994     0       0.059
+## Variables not shown: roamer (fctr), cat_id (int), centered_weight (dbl)</code></pre>
 </div>
 </div>
 </div>
