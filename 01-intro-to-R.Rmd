@@ -8,7 +8,7 @@ title: Introduction to R
 >
 > * Familiarize participants with R syntax
 > * Understand the concepts of objects and assignment
-> * Understand the concepts of vector and data types
+> * Understand the concepts of vectors and data types
 > * Get exposed to a few functions
 
 ------------
@@ -38,7 +38,7 @@ We can also comment what it is we're doing
 3 + 5
 ```
 
-What happens if we do that same command with the # sign in the front?
+What happens if we do that same command without the # sign in the front?
 
 ```{r, purl=FALSE, eval=FALSE}
 I am adding 3 and 5. R is fun!
@@ -69,12 +69,14 @@ a <- 3
 # assign 5 to b
 b <- 5
 
+```
+
+```{r}
 # what now is a
 a
 # what now is b
 b
-
-#Add a and b
+# Add a and b
 a + b
 ```
 
@@ -309,7 +311,7 @@ We can index a vector in many different ways. We can specify a position of a sin
 ```{r}
 one_to_five[3]
 one_to_five[1:3]
-one_to_five[c(1,3,5)]
+one_to_five[c(1, 3, 5)]
 one_to_five[-2]
 ```
 

@@ -32,7 +32,23 @@ for statistics but also data science. Inspired by the programming language S.
 * Large and growing community of peers.
 
 
-# Presentation of RStudio
+# Awesome R tools
+
+### Knitr/R-markdown
+Knitr is an R library that allows you to create dynamic code reports. 
+
+**Example:**         
+[This](https://www.buzzfeed.com/peteraldhous/spies-in-the-skies?utm_term=.vw6m6GNwGa#.mwZYqXjQXv) 
+BuzzFeed article, reporting on government surveillance planes, included all of their [analysis](http://buzzfeednews.github.io/2016-04-federal-surveillance-planes/analysis.html) as
+an R-markdown document.
+
+### Shiny
+Shiny is a web application framework built for R. 
+
+**Example:**            
+[This](http://shiny.rstudio.com/gallery/movie-explorer.html) is a shiny app to visualize and explore a movie dataset. 
+
+### RStudio
 
 Start RStudio -- Let's start by learning about our tool.
 

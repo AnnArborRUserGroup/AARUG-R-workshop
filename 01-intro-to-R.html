@@ -118,7 +118,7 @@ $(document).ready(function () {
 <ul>
 <li>Familiarize participants with R syntax</li>
 <li>Understand the concepts of objects and assignment</li>
-<li>Understand the concepts of vector and data types</li>
+<li>Understand the concepts of vectors and data types</li>
 <li>Get exposed to a few functions</li>
 </ul>
 </blockquote>
@@ -141,7 +141,7 @@ $(document).ready(function () {
 <pre class="r"><code># I am adding 3 and 5. R is fun!
 3 + 5</code></pre>
 <pre><code>## [1] 8</code></pre>
-<p>What happens if we do that same command with the # sign in the front?</p>
+<p>What happens if we do that same command without the # sign in the front?</p>
 <pre class="r"><code>I am adding 3 and 5. R is fun!
 3 + 5</code></pre>
 <p>Now R is trying to run that sentence as a command, and it doesn’t work. Now we’re stuck over in the console. The <code>+</code> sign means that it’s still waiting for input, so we can’t type in a new command. To get out of this type <code>Esc</code>. This will work whenever you’re stuck with that <code>+</code> sign.</p>
@@ -154,9 +154,8 @@ $(document).ready(function () {
 <pre class="r"><code># assign 3 to a
 a &lt;- 3
 # assign 5 to b
-b &lt;- 5
-
-# what now is a
+b &lt;- 5</code></pre>
+<pre class="r"><code># what now is a
 a</code></pre>
 <pre><code>## [1] 3</code></pre>
 <pre class="r"><code># what now is b
@@ -270,7 +269,7 @@ divided_integers</code></pre>
 <pre><code>## [1] 3</code></pre>
 <pre class="r"><code>one_to_five[1:3]</code></pre>
 <pre><code>## [1] 1 2 3</code></pre>
-<pre class="r"><code>one_to_five[c(1,3,5)]</code></pre>
+<pre class="r"><code>one_to_five[c(1, 3, 5)]</code></pre>
 <pre><code>## [1] 1 3 5</code></pre>
 <pre class="r"><code>one_to_five[-2]</code></pre>
 <pre><code>## [1] 1 3 4 5</code></pre>
