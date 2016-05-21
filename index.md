@@ -42,7 +42,7 @@ The Old Faithful dataset for the *optional* takehome is available [here]({{page.
 
 ## Takehome
 
-We've put together an *optional* takehome assignment.
+There is an *optional* takehome assignment available [here](takehome.Rmd).
 
 ## Socrative
 
