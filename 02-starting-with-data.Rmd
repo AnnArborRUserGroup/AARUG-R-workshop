@@ -15,7 +15,7 @@ title: Data frames
 ------------
 
 # Setup
-The file required for this lesson can be downlaoded by clicking on this [link](./data/cats.csv)
+The file required for this lesson can be downlaoded by clicking on this [link](./data/herding-cats-small.csv)
 
 - Move the downloaded file into the directory for this workshop
 
@@ -39,7 +39,7 @@ setwd("~/Workshops/AARUG")
 You are now ready to load the data. We are going to use the R function  `read.csv()` to load the data file into memory (as a `data.frame`):
 
 ```{r, eval=TRUE,  purl=FALSE}
-cats <- read.csv(file = 'data/cats.csv')
+cats <- read.csv(file = 'data/herding-cats-small.csv')
 ```
 
 This statement doesn't produce any output because assignment doesn't display
@@ -193,7 +193,7 @@ cats[cats$coat == "black", c("coat", "weight")]
 Finally, we can use `&`, the symbol for "and", and `|`, the symbol for "or", to make logical statements.
 
 ```{r}
-cats[cats$coat == "black" & cats$likes_string == TRUE, ]
+cats[cats$coat == "black" & cats$roamer == "no", ]
 
 ```
 This statement selects all records with black cats that also like string

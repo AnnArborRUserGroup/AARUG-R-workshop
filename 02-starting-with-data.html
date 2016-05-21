@@ -125,7 +125,7 @@ $(document).ready(function () {
 <hr />
 <div id="setup" class="section level1">
 <h1>Setup</h1>
-<p>The file required for this lesson can be downlaoded by clicking on this <a href="./data/cats.csv">link</a></p>
+<p>The file required for this lesson can be downlaoded by clicking on this <a href="./data/herding-cats-small.csv">link</a></p>
 <ul>
 <li>Move the downloaded file into the directory for this workshop</li>
 </ul>
@@ -136,7 +136,7 @@ $(document).ready(function () {
 <div id="looking-at-data" class="section level1">
 <h1>Looking at data</h1>
 <p>You are now ready to load the data. We are going to use the R function <code>read.csv()</code> to load the data file into memory (as a <code>data.frame</code>):</p>
-<pre class="r"><code>cats &lt;- read.csv(file = 'data/cats.csv')</code></pre>
+<pre class="r"><code>cats &lt;- read.csv(file = 'data/herding-cats-small.csv')</code></pre>
 <p>This statement doesn’t produce any output because assignment doesn’t display anything. If we want to check that our data has been loaded, we can print the variable’s value: <code>cats</code></p>
 <pre class="r"><code>head(cats)
 View(cats)</code></pre>
@@ -150,11 +150,16 @@ View(cats)</code></pre>
 <p>By default, <code>data.frame</code> converts (= coerces) columns that contain characters (i.e., text) into the <code>factor</code> data type. Depending on what you want to do with the data, you may want to keep these columns as <code>character</code>. To do so, <code>read.csv()</code> and <code>read.table()</code> have an argument called <code>stringsAsFactors</code> which can be set to <code>FALSE</code>:</p>
 <p>Let’s now check the __str__ucture of this <code>data.frame</code> in more details with the function <code>str()</code>:</p>
 <pre class="r"><code>str(cats)</code></pre>
-<pre><code>## 'data.frame':    8 obs. of  4 variables:
-##  $ cat_id      : int  1 2 3 4 5 6 7 8
-##  $ coat        : Factor w/ 5 levels &quot;black&quot;,&quot;calico&quot;,..: 2 1 5 3 1 4 2 5
-##  $ weight      : num  2.1 5 3.2 6 4 3.7 4.4 3.8
-##  $ likes_string: logi  TRUE FALSE TRUE TRUE TRUE FALSE ...</code></pre>
+<pre><code>## 'data.frame':    10 obs. of  9 variables:
+##  $ street     : Factor w/ 10 levels &quot;115 Via Santa Maria&quot;,..: 10 8 7 4 3 2 1 9 6 5
+##  $ coat       : Factor w/ 5 levels &quot;black&quot;,&quot;brown&quot;,..: 5 4 2 1 3 5 2 2 1 4
+##  $ sex        : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 1 1 1 2 1 2 2 1 1
+##  $ age        : num  3 8.23 4.6 7.17 4.66 ...
+##  $ weight     : num  3.99 12.37 3.95 8.05 6.19 ...
+##  $ fixed      : int  0 1 1 1 1 1 1 1 0 0
+##  $ wander_dist: num  0.04 0.033 0.076 0.03 0.085 0.085 0.097 0.033 0.065 0.059
+##  $ roamer     : Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: 1 1 1 1 2 1 2 1 1 1
+##  $ cat_id     : int  321 250 219 182 107 234 196 311 130 349</code></pre>
 </div>
 <div id="inspecting-data.frame-objects" class="section level1">
 <h1>Inspecting <code>data.frame</code> objects</h1>
@@ -193,52 +198,64 @@ head_meta &lt;- cats[1:6, ] # Row 1-6 which is the same as head</code></pre>
 <p>For larger datasets, it can be tricky to remember the column number that corresponds to a particular variable. (Are species names in column 5 or 7? oh, right… they are in column 6). In some cases, in which column the variable will be can change if the script you are using adds or removes columns. It’s therefore often better to use column names to refer to a particular variable, and it makes your code easier to read and your intentions clearer.</p>
 <p>You can do operations on a particular column, by selecting it using the <code>$</code> sign. In this case, the entire column is a vector. You can use <code>names(cats)</code> or <code>colnames(cats)</code> to remind yourself of the column names. For instance, to extract all the cats’ weight information from our dataset:</p>
 <pre class="r"><code>cats$weight</code></pre>
-<pre><code>## [1] 2.1 5.0 3.2 6.0 4.0 3.7 4.4 3.8</code></pre>
+<pre><code>##  [1]  3.993 12.368  3.947  8.053  6.193  3.860  5.626  3.982  3.291  6.994</code></pre>
 <p>In some cases, you may way to select more than one column. You can do this using the square brackets. Suppose we wanted weight and coat information:</p>
 <pre class="r"><code>cats[, c(&quot;weight&quot;, &quot;coat&quot;)]</code></pre>
-<pre><code>##   weight   coat
-## 1    2.1 calico
-## 2    5.0  black
-## 3    3.2  tabby
-## 4    6.0   grey
-## 5    4.0  black
-## 6    3.7 orange
-## 7    4.4 calico
-## 8    3.8  tabby</code></pre>
+<pre><code>##    weight    coat
+## 1   3.993   tabby
+## 2  12.368 maltese
+## 3   3.947   brown
+## 4   8.053   black
+## 5   6.193  calico
+## 6   3.860   tabby
+## 7   5.626   brown
+## 8   3.982   brown
+## 9   3.291   black
+## 10  6.994 maltese</code></pre>
 <p>You can even access columns by column name <em>and</em> select specific rows of interest. For example, if we wanted the weight and coat of just rows 4 through 7, we could do:</p>
 <pre class="r"><code>cats[4:7, c(&quot;weight&quot;, &quot;coat&quot;)]</code></pre>
 <pre><code>##   weight   coat
-## 4    6.0   grey
-## 5    4.0  black
-## 6    3.7 orange
-## 7    4.4 calico</code></pre>
+## 4  8.053  black
+## 5  6.193 calico
+## 6  3.860  tabby
+## 7  5.626  brown</code></pre>
 <p>We can can also use logical statements to select and filter items from a <code>data.frame</code>. For example, to select all rows with black cats we could use the following statement</p>
 <pre class="r"><code>cats[cats$coat == &quot;black&quot;, ]</code></pre>
-<pre><code>##   cat_id  coat weight likes_string
-## 2      2 black      5        FALSE
-## 5      5 black      4         TRUE</code></pre>
+<pre><code>##             street  coat    sex   age weight fixed wander_dist roamer
+## 4    140 Robin Way black female 7.172  8.053     1       0.030     no
+## 9 16982 Kennedy Rd black female 2.851  3.291     0       0.065     no
+##   cat_id
+## 4    182
+## 9    130</code></pre>
 <p>let’s break this down a bit. The logical statement in the brackets returns a vector of <code>TRUE</code> and <code>FALSE</code> values.</p>
 <pre class="r"><code>cats$coat == &quot;black&quot;</code></pre>
-<pre><code>## [1] FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE</code></pre>
 <p>These <code>booleans</code> allow us to select which records we want from our <code>data.frame</code></p>
 <p>Another way to do this is with the function <code>which()</code>. <code>which()</code> finds the indexes of records meeting a logical statement</p>
 <pre class="r"><code>which(cats$coat == &quot;black&quot;)</code></pre>
-<pre><code>## [1] 2 5</code></pre>
+<pre><code>## [1] 4 9</code></pre>
 <p>So, we could also write</p>
 <pre class="r"><code>cats[which(cats$coat == &quot;black&quot;), ]</code></pre>
-<pre><code>##   cat_id  coat weight likes_string
-## 2      2 black      5        FALSE
-## 5      5 black      4         TRUE</code></pre>
+<pre><code>##             street  coat    sex   age weight fixed wander_dist roamer
+## 4    140 Robin Way black female 7.172  8.053     1       0.030     no
+## 9 16982 Kennedy Rd black female 2.851  3.291     0       0.065     no
+##   cat_id
+## 4    182
+## 9    130</code></pre>
 <p>But that’s getting really long and ugly. R is already considered somewhat of an ugly duckling among programming languages, so no reason to play into the stereotype.</p>
 <p>We can combine logical statements and index statements</p>
 <pre class="r"><code>cats[cats$coat == &quot;black&quot;, c(&quot;coat&quot;, &quot;weight&quot;)]</code></pre>
 <pre><code>##    coat weight
-## 2 black      5
-## 5 black      4</code></pre>
+## 4 black  8.053
+## 9 black  3.291</code></pre>
 <p>Finally, we can use <code>&amp;</code>, the symbol for “and”, and <code>|</code>, the symbol for “or”, to make logical statements.</p>
-<pre class="r"><code>cats[cats$coat == &quot;black&quot; &amp; cats$likes_string == TRUE, ]</code></pre>
-<pre><code>##   cat_id  coat weight likes_string
-## 5      5 black      4         TRUE</code></pre>
+<pre class="r"><code>cats[cats$coat == &quot;black&quot; &amp; cats$roamer == &quot;no&quot;, ]</code></pre>
+<pre><code>##             street  coat    sex   age weight fixed wander_dist roamer
+## 4    140 Robin Way black female 7.172  8.053     1       0.030     no
+## 9 16982 Kennedy Rd black female 2.851  3.291     0       0.065     no
+##   cat_id
+## 4    182
+## 9    130</code></pre>
 <p>This statement selects all records with black cats that also like string</p>
 </div>
 <div id="factors" class="section level2">
@@ -247,11 +264,16 @@ head_meta &lt;- cats[1:6, ] # Row 1-6 which is the same as head</code></pre>
 <p>Factors are stored as integers, and have labels associated with these unique integers. While factors look (and often behave) like character vectors, they are actually integers under the hood, and you need to be careful when treating them like strings.</p>
 <p>In the data frame we just imported, let’s do</p>
 <pre class="r"><code>str(cats)</code></pre>
-<pre><code>## 'data.frame':    8 obs. of  4 variables:
-##  $ cat_id      : int  1 2 3 4 5 6 7 8
-##  $ coat        : Factor w/ 5 levels &quot;black&quot;,&quot;calico&quot;,..: 2 1 5 3 1 4 2 5
-##  $ weight      : num  2.1 5 3.2 6 4 3.7 4.4 3.8
-##  $ likes_string: logi  TRUE FALSE TRUE TRUE TRUE FALSE ...</code></pre>
+<pre><code>## 'data.frame':    10 obs. of  9 variables:
+##  $ street     : Factor w/ 10 levels &quot;115 Via Santa Maria&quot;,..: 10 8 7 4 3 2 1 9 6 5
+##  $ coat       : Factor w/ 5 levels &quot;black&quot;,&quot;brown&quot;,..: 5 4 2 1 3 5 2 2 1 4
+##  $ sex        : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 1 1 1 2 1 2 2 1 1
+##  $ age        : num  3 8.23 4.6 7.17 4.66 ...
+##  $ weight     : num  3.99 12.37 3.95 8.05 6.19 ...
+##  $ fixed      : int  0 1 1 1 1 1 1 1 0 0
+##  $ wander_dist: num  0.04 0.033 0.076 0.03 0.085 0.085 0.097 0.033 0.065 0.059
+##  $ roamer     : Factor w/ 2 levels &quot;no&quot;,&quot;yes&quot;: 1 1 1 1 2 1 2 1 1 1
+##  $ cat_id     : int  321 250 219 182 107 234 196 311 130 349</code></pre>
 <p>We can see the names of the multiple columns. And, we see that coat is a <code>Factor w/ 5 levels</code></p>
 <p>When we read in a file, any column that contains text is automatically assumed to be a factor. Once created, factors can only contain a pre-defined set values, known as <em>levels</em>. By default, R always sorts <em>levels</em> in alphabetical order.</p>
 <p>You can check this by using the function <code>levels()</code>, and check the number of levels using <code>nlevels()</code>:</p>
