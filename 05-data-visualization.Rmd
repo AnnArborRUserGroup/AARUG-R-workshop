@@ -32,11 +32,6 @@ plot(x = cats$age, y = cats$weight)
 
 Each point represents a row in our dataset. The value on the x-axis is the mother's age and the values on the y-axis correspond to the birth weight for the infant. For any plot you can customize many features of your graphs (fonts, colors, axes, titles) through [graphic options](http://www.statmethods.net/advgraphs/parameters.html)
 
-Exercises:
-
-1. 
-
-
 # Advanced figures (`ggplot2`)
 
 More recently, R users have moved away from base graphic options and towards a plotting package called `ggplot2` that adds a lot of functionality to the basic plots seen above. The syntax is different but it’s extremely powerful and flexible. We can start by re-creating some of the above plots but using ggplot functions to get a feel for the syntax.

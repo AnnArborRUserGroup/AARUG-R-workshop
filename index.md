@@ -38,6 +38,12 @@ The small Herding Cats dataset is available [here]({{page.dataurl}}/herding-cats
          	
 The full Herding Cats dataset is available [here]({{page.dataurl}}/herding-cats.csv)
 
+The Old Faithful dataset for the *optional* takehome is available [here]({{page.dataurl}}/Old-Faithful.csv)
+
+## Takehome
+
+We've put together an *optional* takehome assignment.
+
 ## Socrative
 
 We will use Socrative to work through exercises during the workshop  				
