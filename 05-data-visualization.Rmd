@@ -5,25 +5,20 @@ output:
     css: css/lesson.css
 ---
 
-```{r, echo=FALSE}
-#metadata <- read.csv('./data/Ecoli_metadata.csv')
-```
-
 > ## Learning Objectives {.objectives}
 >
-> * Basic plots 
-> * Advanced plots (introducing `ggplot`)
+> * Grammar of graphics concepts (geoms, aesthetics)
+> * Advanced plots (scales, facets, themes)
 > * Writing images (and other things) to file
 
 # Basic plots in R
 
-When we are working with large sets of numbers it can be useful to display that information graphically. R has a number of built-in tools for basic graph types such as hisotgrams, scatter plots, bar charts, boxplots and much [more](http://www.statmethods.net/graphs/). We'll test a few of these out here on the `birthwt` data.
+When we are working with large sets of numbers it can be useful to display that information graphically. R has a number of built-in tools for basic graph types such as hisotgrams, scatter plots, bar charts, boxplots and much [more](http://www.statmethods.net/graphs/). We'll test a few of these out here on the `cats` data.
 
 
 ```{r import data}
-data(birthwt, package = "MASS")
-birthwt <- data.frame(birthwt)
-birthwt$low <- factor(birthwt$low)
+library(dplyr)
+cats <- read.csv("data/herding-cats.csv")
 ```
 
 ## Scatterplot
@@ -32,66 +27,14 @@ Let's start with a **scatterplot**. A scatter plot provides a graphical view of 
 Let's make a scatterplot of birth weight by mother's age.
 
 ```{r scatter-plot1, fig.align='center'}
-plot(x = birthwt$age, y = birthwt$bwt)
+plot(x = cats$age, y = cats$weight)
 ```
 
 Each point represents a row in our dataset. The value on the x-axis is the mother's age and the values on the y-axis correspond to the birth weight for the infant. For any plot you can customize many features of your graphs (fonts, colors, axes, titles) through [graphic options](http://www.statmethods.net/advgraphs/parameters.html)
-For example, we can change the shape of the data point using `pch`.
-
-```{r, fig.align='center'}
-plot(x = birthwt$age, y = birthwt$bwt, pch = 8)
-```
-
-We can add a title to the plot by assigning a string to `main`:
-
-```{r, fig.align='center'}
-plot(bwt ~ age, data = birthwt, main = "Scatter plot of mother's age by birth weight")
-```
 
 Exercises:
 
-1. Make scatterplot of birth weight (`bwt`) by mother's weight in pounds at last menstrual period (`lwt`).
-
-## Histogram
-
-Another way to visualize the distribution of genome sizes is to use a histogram. We can make a histogram by using the `hist` function:
-
-```{r, fig.align='center'}
-hist(birthwt$age)
-```
-
-As with the `plot` function we can customize attributes such as the title.
-
-```{r, fig.align='center'}
-hist(birthwt$age, main = "Histogram of mother's age")
-```
-
-We can also add a custom label for the x-axis.
-
-```{r, fig.align='center'}
-hist(birthwt$age, main = "Histogram of mother's age", xlab = "Age (in years)")
-```
-
-##Boxplot
-
-Another way to visualize distributions is using a **boxplot**. The graph consists of a box and "whiskers". The box ranges from the 25th to 75th percentile, called the inter-quartile range or IQR. The 50th percentile is marked with a bold line. The whiskers denote the minimum and maximum values (excluding outliers). Circles above or below the whiskers are outliers.
-
-```{r, fig.align='center'}
-boxplot(birthwt$age, main = "Boxplot of mother's age")
-```
-
-Using additional information from our birth weights dataset, we can use plots to compare values between the groups using a **boxplot**.
-
-```{r boxplot, fig.align='center'}
-boxplot(age ~ low, data=birthwt, main = "Boxplot of mother's age by low birth weight")
-```
-
-Similar to the scatterplots above, we can pass in arguments to add in extras like plot title, and colors.
-
-```{r, fig.align='center'}
-boxplot(age ~ low, data = birthwt,  col = c("orange","purple"),
-        main = "Boxplot of mother's age by low birth weight")
-```
+1. 
 
 
 # Advanced figures (`ggplot2`)
@@ -108,12 +51,12 @@ Load the `ggplot2` package.
 library(ggplot2)
 ```
 
-The ggplot() function is used to initialize the basic graph structure, then we add to it. The basic idea is that you specify different parts of the plot, and add them together using the + operator.
+The `ggplot()` function is used to initialize the basic graph structure, then we add to it. The basic idea is that you specify different parts of the plot, and add them together using the + operator.
 
 We will start with a blank plot and will find that you will get an error, because you need to add layers.
 
 ```{r, fig.align='center'}
-ggplot(birthwt)
+ggplot(cats)
 ```
 
 Geometric objects are the actual marks we put on a plot. Examples include:
@@ -125,11 +68,11 @@ Geometric objects are the actual marks we put on a plot. Examples include:
 A plot must have at least one geom; there is no upper limit. You can add a geom to a plot using the `+` operator.
 
 ```{r, eval=FALSE}
-ggplot(birthwt) +
+ggplot(cats) +
     geom_point()
 ```
 
-Each type of geom usually has a required set of aesthetics to be set, and usually accepts only a subset of all aesthetics –refer to the geom help pages to see what mappings each geom accepts. Aesthetic mappings are set with the aes() function. 
+Each type of geom usually has a required set of aesthetics to be set, and usually accepts only a subset of all aesthetics –refer to the geom help pages to see what mappings each geom accepts. Aesthetic mappings are set with the `aes()` function. 
 
 Examples include:
 
@@ -142,41 +85,26 @@ Examples include:
 To start, we will add position for the x- and y-axis since geom_point requires mappings for x and y, all others are optional.
 
 ```{r, fig.align='center'}
-ggplot(birthwt) +
-    geom_point(aes(x = age, y = bwt))
+ggplot(cats) +
+    geom_point(aes(x = age, y = weight),
+               color = "red",
+               alpha = 0.5,
+               shape = 1,
+               size = 3)
 ```
 
-###Histogram
+###Scales
 
-To plot a histogram we require another geometric object `geom_histogram`, which requires a statistical transformation. Some plot types (such as scatterplots) do not require transformations, each point is plotted at x and y coordinates equal to the original value. Other plots, such as boxplots, histograms, prediction lines etc. need to be transformed, and usually has a default statistic that can be changed via the `stat_bin` argument.
+Scales control the mapping between data and aesthetics.
 
-```{r, fig.align='center'}
-ggplot(birthwt) +
-  geom_histogram(aes(x = age))
-```
-
-Try plotting with the default value and compare it to the plot using the binwidth values. How do they differ?
-
-```{r, fig.align='center'}
-ggplot(birthwt) +
-  geom_histogram(aes(x = age), stat = "bin", binwidth=5)
-```
-
-###Boxplot
-
-Now that we have all the required information on let's try plotting a boxplot similar to what we had done using the base plot functions at the start of this lesson. We can add some additional layers to include a plot title and change the axis labels. Explore the code below and all the different layers that we have added to understand what each layer contributes to the final graphic.
-
-```{r, fig.align='center'}
-ggplot(birthwt) +
-    geom_boxplot(aes(x = 1, y = age))
-```
-
-
-```{r, fig.align='center'}
-ggplot(birthwt) +
-    geom_boxplot(aes(x = low, y = age, group = low, fill = low)) +
-    xlab("Indicator for low birthweight") +
-    ylab("Mother's age")
+```{r}
+ggplot(cats) +
+    geom_point(aes(x = age, y = weight)) +
+    scale_x_continuous(name = "Age",
+                       breaks = c(1, 2, 3),
+                       limits = c(-5, 15)) +
+    scale_y_continuous("Weight", trans = "log") + 
+    ggtitle(label = "Scatterplot")
 ```
 
 ###Themes
@@ -191,11 +119,9 @@ The ggplot2 theme system handles non-data plot elements such as:
 There are built-in themes we can use, or we can adjust specific elements. We can add additional aesthetics by mapping them to other variables in our dataframe. For example, the color of the boxplots will reflect low birth weight.
 
 ```{r, fig.align='center'}
-ggplot(birthwt) +
-    geom_boxplot(aes(x = low, y = age, group = low, fill = low)) +
-    xlab("Indicator for low birthweight") +
-    ylab("Mother's age") +
-    theme_dark()
+ggplot(cats) +
+    geom_point(aes(x = age, y = weight)) +
+    theme_bw()
 ```
 
 ###Facets
@@ -203,15 +129,15 @@ ggplot(birthwt) +
 Facets display subsets of the dataset in different panels. Let's use the `facet_grid` function to lay out panels in a grid. Each panel will have the same geometric objects.
 
 ```{r}, fig.align='center'}
-ggplot(birthwt) +
-    geom_point(aes(x = age, y = bwt)) +
+ggplot(cats) +
+    geom_point(aes(x = age, y = weight)) +
     xlab("Mother's age") +
     ylab("Birth weight") +
-    facet_grid(. ~ low) +
+    facet_grid(. ~ coat) +
     theme_linedraw()
 ```
 
-Here we have two panels one for each factor level of `low`. The panels are layed out in columns because the expression `. ~ low` 
+Here we have two panels one for each factor level of `coat`. The panels are layed out in columns because the expression `. ~ coat` 
 
 ###Writing figures to file
 
