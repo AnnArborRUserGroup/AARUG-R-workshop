@@ -27,16 +27,16 @@ AARUG Beginner R Workshop
 0. [Lesson 00 Before we start](00-before-we-start.html)
 1. [Lesson 01 Introduction to R](01-intro-to-R.html)
 2. [Lesson 02 Starting with data](02-starting-with-data.html)
-3. [Lesson 03 R Markdown](03-rmarkdown.html)
+3. [Lesson 03 Packages & R Markdown](03-packages-and-rmarkdown.html)
 4. [Lesson 04 Herding Cats with dplyr](04-dplyr.html)
 5. [Lesson 05 Data visualisation with ggplot2](05-data-visualization.html)
 6. [Lesson 06 Statistics](06-statistics.html)
 
 ## Data
 
-Cats data is available [here]({{page.dataurl}}/cats.csv)
+The small Herding Cats dataset is available [here]({{page.dataurl}}/herding-cats-small.csv)
          	
-Birthwt data is available [here]({{page.dataurl}}/birthwt.csv)
+The full Herding Cats dataset is available [here]({{page.dataurl}}/herding-cats.csv)
 
 ## Socrative
 
