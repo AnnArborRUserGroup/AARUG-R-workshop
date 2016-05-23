@@ -10,7 +10,7 @@ title: Data frames
 > * load external data (CSV files) in memory 
 > * understand the concept of a `data.frame`
 > * know how to access any element of a `data.frame`
-> * understand what are factors and how to manipulate them
+> * understand `factors` and how to manipulate them
 
 ------------
 
@@ -25,7 +25,7 @@ To view your current working directory use the `getwd()` command
 getwd()
 ```
 
-To set you working directory, use the `setwd()` command. We want to set the working directory to the same location as the file. For example: 
+To set you working directory, use the `setwd()` command. We want to set the working directory to the location of our project. For example: 
 ```{r, eval=FALSE}
 setwd("~/Workshops/AARUG")
 ```
@@ -36,32 +36,41 @@ setwd("~/Workshops/AARUG")
 # Looking at data
 
 
-You are now ready to load the data. We are going to use the R function  `read.csv()` to load the data file into memory (as a `data.frame`):
+You are now ready to load the data. We are going to use the R function  `read.csv()` to load the data file into memory (as a `data.frame`). In this case, our data is in a subdirectory called "data". 
 
-```{r, eval=TRUE,  purl=FALSE}
+```{r}
 cats <- read.csv(file = 'data/herding-cats-small.csv')
 ```
 
+
 This statement doesn't produce any output because assignment doesn't display
 anything. If we want to check that our data has been loaded, we can print the
-variable's value: `cats`
+variable's value: `cats`.
 
-```{r, eval=FALSE, purl=FALSE}
+```{r}
+cats
+```
+
+However, if our dataset was larger, we probably wouldn't want to print the whole
+thing to our console. Instead, we can use the `head` command to view the first six
+lines or the `View` command to open the dataset in a spreadsheet-like viewer. 
+
+```{r, eval=FALSE}
 head(cats)
 View(cats)
 ```
 
-We've just done two very useful things.
-1. We've read our data in to R, so now we can work with it in R
-2. We've created a data frame (with the read.csv command) the 
-standard way R works with data. 
+We've just done two very useful things.         
+1. We've read our data in to R, so now we can work with it in R           
+2. We've created a data frame (with the `read.csv` command) the 
+standard way R works with data.        
 
 # What are data frames?
 
 `data.frame` is the _de facto_ data structure for most tabular data and what we
 use for statistics and plotting.
 
-A `data.frame` is a collection of vectors of identical lengths. Each vector
+A `data.frame` is actually a `list` of vectors of identical lengths. Each vector
 represents a column, and each vector can be of a different data type (e.g.,
 characters, integers, factors). The `str()` function is useful to inspect the
 data types of the columns.
@@ -75,10 +84,10 @@ the data, you may want to keep these columns as `character`. To do so,
 `read.csv()` and `read.table()` have an argument called `stringsAsFactors` which
 can be set to `FALSE`:
 
-Let's now check the __str__ucture of this `data.frame` in more details with the
+Let's now check the structure of this `data.frame` in more details with the
 function `str()`:
 
-```{r, purl=FALSE}
+```{r}
 str(cats)
 ```
 
@@ -90,20 +99,20 @@ functions to get a sense of the content/structure of the data.
 
 * Size:
     * `dim()` - returns a vector with the number of rows in the first element, and
-    the number of columns as the second element (the __dim__ensions of the object)
+    the number of columns as the second element (the dimensions of the object)
     * `nrow()` - returns the number of rows
     * `ncol()` - returns the number of columns
 * Content:
     * `head()` - shows the first 6 rows
     * `tail()` - shows the last 6 rows
 * Names:
-    * `names()` - returns the column names (synonym of `colnames()` for `data.frame`
-	objects)
-   * `rownames()` - returns the row names
-* Summary:
-   * `str()` - structure of the object and information about the class, length and
-	content of  each column
-   * `summary()` - summary statistics for each column
+    * `names()` - returns the column names (synonym of `colnames()` 
+    for `data.frame` objects)             
+    * `rownames()` - returns the row names  
+* Summary:    
+    * `str()` - structure of the object and information about the class, length and
+	content of  each column         
+    * `summary()` - summary statistics for each column         
 
 Note: most of these functions are "generic", they can be used on other types of
 objects besides `data.frame`.
@@ -117,7 +126,7 @@ Our cats data frame has rows and columns (it has 2 dimensions), if we want to
 extract some specific data from it, we need to specify the "coordinates" we want
 from it. Row numbers come first, followed by column numbers (i.e. [row, column]).
 
-```{r, purl=FALSE, eval=FALSE}
+```{r eval=FALSE}
 cats[1, 2]   # first element in the 2nd column of the data frame
 cats[1, 6]   # first element in the 6th column
 cats[1:3, 7] # first three elements in the 7th column
@@ -144,10 +153,10 @@ cats$weight
 ```
 
 In some cases, you may way to select more than one column. You can do this using
-the square brackets. Suppose we wanted weight and coat information:
+the square brackets, passing in a vector of the columns to select. Suppose we wanted weight and coat information:
 
 ```{r}
-cats[, c("weight", "coat")]
+cats[ , c("weight", "coat")]
 ```
 
 You can even access columns by column name _and_ select specific rows of interest. For example, if we wanted the weight and coat of just rows
@@ -209,7 +218,7 @@ actually integers under the hood, and you need to be careful when treating them
 like strings.
 
 In the data frame we just imported, let's do 
-```{r, purl=TRUE}
+```{r}
 str(cats)
 ```
 
@@ -224,7 +233,7 @@ assumed to be a factor. Once created, factors can only contain a pre-defined set
 You can check this by using the function `levels()`, and check the
 number of levels using `nlevels()`:
 
-```{r, purl=FALSE, eval=FALSE}
+```{r}
 levels(cats$coat)
 nlevels(cats$coat)
 ```
@@ -234,7 +243,7 @@ to specify the order because it is meaningful (e.g., "low", "medium", "high") or
 it is required by particular type of analysis. Additionally, specifying the
 order of the levels allows to compare levels:
 
-```{r, purl=FALSE, error=TRUE, eval=FALSE}
+```{r, error=TRUE}
 satisfaction <- factor(c("low", "high", "medium", "high", "low", "medium", "high"))
 levels(satisfaction)
 satisfaction <- factor(satisfaction, levels = c("low", "medium", "high"))
@@ -260,7 +269,7 @@ If you need to convert a factor to a character vector, simply use
 Converting a factor to a numeric vector is however a little trickier, and you
 have to go via a character vector. Compare:
 
-```{r, purl=TRUE, eval=FALSE}
+```{r}
 f <- factor(c(1, 5, 10, 2))
 as.numeric(f)               ## wrong! and there is no warning...
 as.numeric(as.character(f)) ## works...
