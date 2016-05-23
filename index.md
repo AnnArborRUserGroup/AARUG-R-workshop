@@ -2,10 +2,11 @@
 layout: lesson
 root: .
 lastupdated: March 28, 2016
-contributors: ["Kate Hertweck", "Susan McClatchey", "Tracy Teal", "Ryan Williams", "Michelle Berry", "Ellis Valentiner", "Rob Weyant", "Clayton Yochum", "Andrew Moore"]
+contributors: ["Michelle Berry", "Ellis Valentiner", "Rob Weyant", "Clayton Yochum", "Andrew Moore"]
 topic: R
 software: R
 dataurl: https://raw.githubusercontent.com/AnnArborRUserGroup/AARUG-R-workshop/gh-pages/data
+lessonurl: https://raw.githubusercontent.com/AnnArborRUserGroup/AARUG-R-workshop/gh-pages/lessons
 
 ---
 
@@ -24,13 +25,13 @@ AARUG Beginner R Workshop
 ## Lessons:
 
 
-0. [Lesson 00 Before we start](00-before-we-start.html)
-1. [Lesson 01 Introduction to R](01-intro-to-R.html)
-2. [Lesson 02 Starting with data](02-starting-with-data.html)
-3. [Lesson 03 Packages & R Markdown](03-packages-and-rmarkdown.html)
-4. [Lesson 04 Herding Cats with dplyr](04-dplyr.html)
-5. [Lesson 05 Data visualisation with ggplot2](05-data-visualization.html)
-6. [Lesson 06 Statistics](06-statistics.html)
+1. [Lesson 01 What is R?]({{page.lessonurl}}/01-what-is-R/01-what-is-R.html)
+2. [Lesson 02 Vectors and data types]({{page.lessonurl}}/02-vectors-and-datatypes/02-vectors-and-datatypes.html)
+3. [Lesson 03 Data frames]({{page.lessonurl}}/03-data-frames/03-data-frames.html)
+4. [Lesson 04 Packages & R Markdown]({{page.lessonurl}}/04-packages-and-rmarkdown/04-packages-and-rmarkdown.html)
+5. [Lesson 05 Herding Cats with dplyr]({{page.lessonurl}}/05-dplyr/05-dplyr.html)
+6. [Lesson 06 Data visualisation with ggplot2]({{page.lessonurl}}/06-data-visualization/06-data-visualization.html)
+7. [Lesson 07 Statistics]({{page.lessonurl}}/07-statistics/07-statistics.html)
 
 ## Data
 
@@ -42,7 +43,7 @@ The Old Faithful dataset for the *optional* takehome is available [here]({{page.
 
 ## Takehome
 
-There is an *optional* takehome assignment available [here](takehome.Rmd).
+There is an *optional* takehome assignment available [here]({{page.lessonurl}}/takehome/takehome.html).
 
 ## Socrative
 
