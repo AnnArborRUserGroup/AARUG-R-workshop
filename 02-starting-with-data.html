@@ -119,7 +119,7 @@ $(document).ready(function () {
 <li>load external data (CSV files) in memory</li>
 <li>understand the concept of a <code>data.frame</code></li>
 <li>know how to access any element of a <code>data.frame</code></li>
-<li>understand what are factors and how to manipulate them</li>
+<li>understand <code>factors</code> and how to manipulate them</li>
 </ul>
 </blockquote>
 <hr />
@@ -130,25 +130,51 @@ $(document).ready(function () {
 <li>Move the downloaded file into the directory for this workshop</li>
 </ul>
 <p>To view your current working directory use the <code>getwd()</code> command</p>
-<p>To set you working directory, use the <code>setwd()</code> command. We want to set the working directory to the same location as the file. For example:</p>
+<p>To set you working directory, use the <code>setwd()</code> command. We want to set the working directory to the location of our project. For example:</p>
 <pre class="r"><code>setwd(&quot;~/Workshops/AARUG&quot;)</code></pre>
 </div>
 <div id="looking-at-data" class="section level1">
 <h1>Looking at data</h1>
-<p>You are now ready to load the data. We are going to use the R function <code>read.csv()</code> to load the data file into memory (as a <code>data.frame</code>):</p>
+<p>You are now ready to load the data. We are going to use the R function <code>read.csv()</code> to load the data file into memory (as a <code>data.frame</code>). In this case, our data is in a subdirectory called “data”.</p>
 <pre class="r"><code>cats &lt;- read.csv(file = 'data/herding-cats-small.csv')</code></pre>
-<p>This statement doesn’t produce any output because assignment doesn’t display anything. If we want to check that our data has been loaded, we can print the variable’s value: <code>cats</code></p>
+<p>This statement doesn’t produce any output because assignment doesn’t display anything. If we want to check that our data has been loaded, we can print the variable’s value: <code>cats</code>.</p>
+<pre class="r"><code>cats</code></pre>
+<pre><code>##                 street    coat    sex   age weight fixed wander_dist
+## 1       Los Robles Way   tabby female 3.003  3.993     0       0.040
+## 2      242 Harding Ave maltese female 8.234 12.368     1       0.033
+## 3    201 Hollywood Ave   brown female 4.601  3.947     1       0.076
+## 4        140 Robin Way   black female 7.172  8.053     1       0.030
+## 5       135 Charles St  calico   male 4.660  6.193     1       0.085
+## 6  130 Vista Del Campo   tabby female 3.796  3.860     1       0.085
+## 7  115 Via Santa Maria   brown   male 6.917  5.626     1       0.097
+## 8      303 Harding Ave   brown   male 3.713  3.982     1       0.033
+## 9     16982 Kennedy Rd   black female 2.851  3.291     0       0.065
+## 10  16528 Marchmont Dr maltese female 4.594  6.994     0       0.059
+##    roamer cat_id
+## 1      no    321
+## 2      no    250
+## 3      no    219
+## 4      no    182
+## 5     yes    107
+## 6      no    234
+## 7     yes    196
+## 8      no    311
+## 9      no    130
+## 10     no    349</code></pre>
+<p>However, if our dataset was larger, we probably wouldn’t want to print the whole thing to our console. Instead, we can use the <code>head</code> command to view the first six lines or the <code>View</code> command to open the dataset in a spreadsheet-like viewer.</p>
 <pre class="r"><code>head(cats)
 View(cats)</code></pre>
-<p>We’ve just done two very useful things. 1. We’ve read our data in to R, so now we can work with it in R 2. We’ve created a data frame (with the read.csv command) the standard way R works with data.</p>
+<p>We’ve just done two very useful things.<br />
+1. We’ve read our data in to R, so now we can work with it in R<br />
+2. We’ve created a data frame (with the <code>read.csv</code> command) the standard way R works with data.</p>
 </div>
 <div id="what-are-data-frames" class="section level1">
 <h1>What are data frames?</h1>
 <p><code>data.frame</code> is the <em>de facto</em> data structure for most tabular data and what we use for statistics and plotting.</p>
-<p>A <code>data.frame</code> is a collection of vectors of identical lengths. Each vector represents a column, and each vector can be of a different data type (e.g., characters, integers, factors). The <code>str()</code> function is useful to inspect the data types of the columns.</p>
+<p>A <code>data.frame</code> is actually a <code>list</code> of vectors of identical lengths. Each vector represents a column, and each vector can be of a different data type (e.g., characters, integers, factors). The <code>str()</code> function is useful to inspect the data types of the columns.</p>
 <p>A <code>data.frame</code> can be created by the functions <code>read.csv()</code> or <code>read.table()</code>, in other words, when importing spreadsheets from your hard drive (or the web).</p>
 <p>By default, <code>data.frame</code> converts (= coerces) columns that contain characters (i.e., text) into the <code>factor</code> data type. Depending on what you want to do with the data, you may want to keep these columns as <code>character</code>. To do so, <code>read.csv()</code> and <code>read.table()</code> have an argument called <code>stringsAsFactors</code> which can be set to <code>FALSE</code>:</p>
-<p>Let’s now check the __str__ucture of this <code>data.frame</code> in more details with the function <code>str()</code>:</p>
+<p>Let’s now check the structure of this <code>data.frame</code> in more details with the function <code>str()</code>:</p>
 <pre class="r"><code>str(cats)</code></pre>
 <pre><code>## 'data.frame':    10 obs. of  9 variables:
 ##  $ street     : Factor w/ 10 levels &quot;115 Via Santa Maria&quot;,..: 10 8 7 4 3 2 1 9 6 5
@@ -167,7 +193,7 @@ View(cats)</code></pre>
 <ul>
 <li>Size:
 <ul>
-<li><code>dim()</code> - returns a vector with the number of rows in the first element, and the number of columns as the second element (the __dim__ensions of the object)</li>
+<li><code>dim()</code> - returns a vector with the number of rows in the first element, and the number of columns as the second element (the dimensions of the object)</li>
 <li><code>nrow()</code> - returns the number of rows</li>
 <li><code>ncol()</code> - returns the number of columns</li>
 </ul></li>
@@ -178,12 +204,17 @@ View(cats)</code></pre>
 </ul></li>
 <li>Names:
 <ul>
-<li><code>names()</code> - returns the column names (synonym of <code>colnames()</code> for <code>data.frame</code> objects)</li>
+<li><code>names()</code> - returns the column names (synonym of <code>colnames()</code> for <code>data.frame</code> objects)<br />
+</li>
+<li><code>rownames()</code> - returns the row names<br />
+</li>
 </ul></li>
-<li><code>rownames()</code> - returns the row names</li>
-<li>Summary:</li>
-<li><code>str()</code> - structure of the object and information about the class, length and content of each column</li>
+<li>Summary:
+<ul>
+<li><code>str()</code> - structure of the object and information about the class, length and content of each column<br />
+</li>
 <li><code>summary()</code> - summary statistics for each column</li>
+</ul></li>
 </ul>
 <p>Note: most of these functions are “generic”, they can be used on other types of objects besides <code>data.frame</code>.</p>
 <div id="indexing-data.frame-objects" class="section level2">
@@ -199,8 +230,8 @@ head_meta &lt;- cats[1:6, ] # Row 1-6 which is the same as head</code></pre>
 <p>You can do operations on a particular column, by selecting it using the <code>$</code> sign. In this case, the entire column is a vector. You can use <code>names(cats)</code> or <code>colnames(cats)</code> to remind yourself of the column names. For instance, to extract all the cats’ weight information from our dataset:</p>
 <pre class="r"><code>cats$weight</code></pre>
 <pre><code>##  [1]  3.993 12.368  3.947  8.053  6.193  3.860  5.626  3.982  3.291  6.994</code></pre>
-<p>In some cases, you may way to select more than one column. You can do this using the square brackets. Suppose we wanted weight and coat information:</p>
-<pre class="r"><code>cats[, c(&quot;weight&quot;, &quot;coat&quot;)]</code></pre>
+<p>In some cases, you may way to select more than one column. You can do this using the square brackets, passing in a vector of the columns to select. Suppose we wanted weight and coat information:</p>
+<pre class="r"><code>cats[ , c(&quot;weight&quot;, &quot;coat&quot;)]</code></pre>
 <pre><code>##    weight    coat
 ## 1   3.993   tabby
 ## 2  12.368 maltese
@@ -277,26 +308,37 @@ head_meta &lt;- cats[1:6, ] # Row 1-6 which is the same as head</code></pre>
 <p>We can see the names of the multiple columns. And, we see that coat is a <code>Factor w/ 5 levels</code></p>
 <p>When we read in a file, any column that contains text is automatically assumed to be a factor. Once created, factors can only contain a pre-defined set values, known as <em>levels</em>. By default, R always sorts <em>levels</em> in alphabetical order.</p>
 <p>You can check this by using the function <code>levels()</code>, and check the number of levels using <code>nlevels()</code>:</p>
-<pre class="r"><code>levels(cats$coat)
-nlevels(cats$coat)</code></pre>
+<pre class="r"><code>levels(cats$coat)</code></pre>
+<pre><code>## [1] &quot;black&quot;   &quot;brown&quot;   &quot;calico&quot;  &quot;maltese&quot; &quot;tabby&quot;</code></pre>
+<pre class="r"><code>nlevels(cats$coat)</code></pre>
+<pre><code>## [1] 5</code></pre>
 <p>Sometimes, the order of the factors does not matter, other times you might want to specify the order because it is meaningful (e.g., “low”, “medium”, “high”) or it is required by particular type of analysis. Additionally, specifying the order of the levels allows to compare levels:</p>
 <pre class="r"><code>satisfaction &lt;- factor(c(&quot;low&quot;, &quot;high&quot;, &quot;medium&quot;, &quot;high&quot;, &quot;low&quot;, &quot;medium&quot;, &quot;high&quot;))
-levels(satisfaction)
-satisfaction &lt;- factor(satisfaction, levels = c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;))
-levels(satisfaction)
-min(satisfaction) ## doesn't work
-satisfaction &lt;- factor(satisfaction, levels = c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;), ordered = TRUE)
-levels(satisfaction)
-min(satisfaction) ## works!</code></pre>
+levels(satisfaction)</code></pre>
+<pre><code>## [1] &quot;high&quot;   &quot;low&quot;    &quot;medium&quot;</code></pre>
+<pre class="r"><code>satisfaction &lt;- factor(satisfaction, levels = c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;))
+levels(satisfaction)</code></pre>
+<pre><code>## [1] &quot;low&quot;    &quot;medium&quot; &quot;high&quot;</code></pre>
+<pre class="r"><code>min(satisfaction) ## doesn't work</code></pre>
+<pre><code>## Error in Summary.factor(structure(c(1L, 3L, 2L, 3L, 1L, 2L, 3L), .Label = c(&quot;low&quot;, : 'min' not meaningful for factors</code></pre>
+<pre class="r"><code>satisfaction &lt;- factor(satisfaction, levels = c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;), ordered = TRUE)
+levels(satisfaction)</code></pre>
+<pre><code>## [1] &quot;low&quot;    &quot;medium&quot; &quot;high&quot;</code></pre>
+<pre class="r"><code>min(satisfaction) ## works!</code></pre>
+<pre><code>## [1] low
+## Levels: low &lt; medium &lt; high</code></pre>
 <p>In R’s memory, these factors are represented by numbers (1, 2, 3). They are better than using simple integer labels because factors are self describing: <code>&quot;low&quot;</code>, <code>&quot;medium&quot;</code>, and <code>&quot;high&quot;</code>&quot; is more descriptive than <code>1</code>, <code>2</code>, <code>3</code>. Which is low? You wouldn’t be able to tell with just integer data. Factors have this information built in. It is particularly helpful when there are many levels (like the species in our example data set).</p>
 <div id="converting-factors" class="section level3">
 <h3>Converting factors</h3>
 <p>If you need to convert a factor to a character vector, simply use <code>as.character(x)</code>.</p>
 <p>Converting a factor to a numeric vector is however a little trickier, and you have to go via a character vector. Compare:</p>
 <pre class="r"><code>f &lt;- factor(c(1, 5, 10, 2))
-as.numeric(f)               ## wrong! and there is no warning...
-as.numeric(as.character(f)) ## works...
-as.numeric(levels(f))[f]    ## The recommended way.</code></pre>
+as.numeric(f)               ## wrong! and there is no warning...</code></pre>
+<pre><code>## [1] 1 3 4 2</code></pre>
+<pre class="r"><code>as.numeric(as.character(f)) ## works...</code></pre>
+<pre><code>## [1]  1  5 10  2</code></pre>
+<pre class="r"><code>as.numeric(levels(f))[f]    ## The recommended way.</code></pre>
+<pre><code>## [1]  1  5 10  2</code></pre>
 </div>
 </div>
 </div>
