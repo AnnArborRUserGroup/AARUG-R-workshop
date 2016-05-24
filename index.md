@@ -6,7 +6,6 @@ contributors: ["Michelle Berry", "Ellis Valentiner", "Rob Weyant", "Clayton Yoch
 topic: R
 software: R
 dataurl: https://raw.githubusercontent.com/AnnArborRUserGroup/AARUG-R-workshop/gh-pages/data
-lessonurl: https://raw.githubusercontent.com/AnnArborRUserGroup/AARUG-R-workshop/gh-pages/lessons
 
 ---
 
@@ -25,13 +24,13 @@ AARUG Beginner R Workshop
 ## Lessons:
 
 
-1. [Lesson 01 What is R?]({{page.lessonurl}}/01-what-is-R/01-what-is-R.html)
-2. [Lesson 02 Vectors and data types]({{page.lessonurl}}/02-vectors-and-datatypes/02-vectors-and-datatypes.html)
-3. [Lesson 03 Data frames]({{page.lessonurl}}/03-data-frames/03-data-frames.html)
-4. [Lesson 04 Packages & R Markdown]({{page.lessonurl}}/04-packages-and-rmarkdown/04-packages-and-rmarkdown.html)
-5. [Lesson 05 Herding Cats with dplyr]({{page.lessonurl}}/05-dplyr/05-dplyr.html)
-6. [Lesson 06 Data visualisation with ggplot2]({{page.lessonurl}}/06-data-visualization/06-data-visualization.html)
-7. [Lesson 07 Statistics]({{page.lessonurl}}/07-statistics/07-statistics.html)
+1. [Lesson 01 What is R?](lessons/01-what-is-R/01-what-is-R.html)
+2. [Lesson 02 Vectors and data types](lessons/02-vectors-and-datatypes/02-vectors-and-datatypes.html)
+3. [Lesson 03 Data frames](lessons/03-data-frames/03-data-frames.html)
+4. [Lesson 04 Packages & R Markdown](lessons/04-packages-and-rmarkdown/04-packages-and-rmarkdown.html)
+5. [Lesson 05 Herding Cats with dplyr](lessons/05-dplyr/05-dplyr.html)
+6. [Lesson 06 Data visualisation with ggplot2](lessons/06-data-visualization/06-data-visualization.html)
+7. [Lesson 07 Statistics](lessons/07-statistics/07-statistics.html)
 
 ## Data
 
