@@ -17,35 +17,47 @@ title: Extending R with Packages & Literate Programming with RMarkdown
 
 Packages are bundles of code which extend the functionality of R.
 
-Anyone can make an R package, and anyone can intall anyone else's R package (if they make it available). This is part of the beauty of open source, and using different R packages is essential to modern R workflows.
+Anyone can make an R package, and anyone can install anyone else's R package (if they make it available). This is part of the beauty of open source, and using different R packages is essential to modern R workflows.
 
-You can get packages from many different places, but we'll focus on just the most common one: CRAN. CRAN is the Comprehensive R Archive Network, a global network of servers which make available for download a set of vetted R packages.
+You can get packages from many different places, but we'll focus on just the most common one: [CRAN](https://cran.r-project.org). CRAN is the Comprehensive R Archive Network, a global network of servers which make available for download a set of vetted R packages.
 
 The next section is about RMarkdown, a package, so we'll install that now.
 
 
 ## Installation
 
-To download and install a package from CRAN, call the `install.packages` command on a string with the name of the desired package:
+To download and install a package from CRAN, call the `install.packages` command on a string with the name of the desired package. You will get output describing the installation progress.
 
-```{r, eval = FALSE}
-install.packages("rmarkdown")
+```{r, eval = TRUE}
+install.packages("rmarkdown", repos="http://cran.rstudio.com/")
 ```
 
 You may be asked to choose a mirror; the RStudio mirror is a good choice as it will pick the nearest mirror automatically. This will also download and install packages which RMarkdown depends on.
 
 You only need to install a package once per machine, unless you need to update an already-installed package. Calling `install.packages` for an existing package will update it if there's a more recent version on CRAN than on your machine.
 
+You can view all of the installed packages using the `installed.packages` command. This will output a lot of information for each package, so if you only want a list of the installed package names, you can specify that you want the "Package" column. I like to look at this as a vector.
+
+```{r, eval = TRUE}
+as.vector(installed.packages()[,"Package"])
+```
+
 
 ## Loading
 
 Most packages need to be loaded into the current environment to be accessible. RMarkdown is specially integrated in RStudio in a way that avoids this, but in general we load packages with the `library` command:
 
-```{r, eval = FALSE}
-library(somepackage)  # notice the lack of quotes
+```{r, eval = TRUE}
+library(rmarkdown)  # notice the lack of quotes
 ```
 
 This will come up again later in the lesson on `dplyr`, an external package that _does_ need to be loaded.
+
+You can also view the packages that you have loaded into your workspace.
+
+```{r, eval = TRUE}
+(.packages())
+```
 
 
 # R Markdown
@@ -67,7 +79,7 @@ Before we delve into what each of these pieces mean, let's "knit" the document s
 
 You should see a new pane open in RStudio that shows R "knitting" the document, and when it's done, a pop-up will appear showing the knitted output.
 
-This new output being displayed is an `html` file; look in the file browser pane, and you'll see a `.html` file next to your `.Rmd` file (may need to refresh), because RStudio automatically saved this output when the document finished knitting.
+This new output being displayed as an `html` file; look in the file browser pane, and you'll see a `.html` file next to your `.Rmd` file (may need to refresh), because RStudio automatically saved this output when the document finished knitting.
 
 Let's look at the individual pieces in this document:
 
@@ -78,10 +90,12 @@ This is the section at the top, with three dashes before and after. This lists s
 You can enlarge text be preceding it with one or more pound signs (`#`). This is mainly useful for organizing a document into sections. The more pound signs, the smaller the text, so when you make sub-section you should add at least one more pound sign than used in the parent sections' title.
 
 ### Link
-Notice the link in the first section, wrapped in angle brackets (`<`, `>`). This makes that text a clickable link.
+You can make text clickable by including a link to a different website. An example can be found above, where we included a link to [CRAN](https://cran.r-project.org).
+
+There are two parts to creating linked text. The first part is including the text you want to see, surrounded by square brackets `[CRAN]`. Immediately after that, add the link surrounded by parentheses `(https://cran.r-project.org)`. The final product looks like `[CRAN](https://cran.r-project.org)`.
 
 ### Bold/Italic Text
-The double-asterisks surrounding the word "Knit" in the second paragraph cause that piece of text to be bold. This phrase can be multiple words, but should not have spaces immediately on the inside of the asterisks. You can make text italix by similarly wrapping in underscores (`_`).
+The double-asterisks surrounding the word "Knit" in the second paragraph cause that piece of text to be bold. This phrase can be multiple words, but should not have spaces immediately on the inside of the asterisks. You can make text italix by similarly wrapping in underscores (`_`) or using single asterisks.
 
 ### Code Chunks
 This is the real meat of the document! An R Markdown code chunk is a section which starts and ends with triple-backticks (\`, not `'`). After the initial set, the curly-bracketed section which starts with `{r` is what forces this to be ran as R code; without this piece, the section would get formatted like code, but would not be executed when knitting. The phrase after the `r` is the _chunk name_. Chunks do not need to be named, but no two chunks can have the same name. Naming chunks can help keep code organized and make it easier to track down the source of errors when they occur.
